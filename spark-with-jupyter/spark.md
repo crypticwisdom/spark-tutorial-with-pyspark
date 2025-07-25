@@ -1,12 +1,6 @@
-**Yes, exactly!**
+## **For learning, local development, and even small projects:**
 
----
-
-## **You Do NOT Need to Download from the Official Spark Site**
-
-For learning, local development, and even small projects:
-
-* `pip install pyspark`
+* `pip install pyspark jupyterlab`
   is all you need.
 
 **This pip package:**
@@ -25,11 +19,13 @@ For learning, local development, and even small projects:
    ```sh
     pip install jupyterlab
    ```
+
 3. **Start it with:**
 
    ```sh
    jupyter lab
    ```
+
 4. **Create a new Python notebook and try:**
 
    ```python
@@ -62,9 +58,5 @@ For learning, local development, and even small projects:
 
 ---
 
-
-# Krish Naik - PySpark Tutorial:
-### Installation and Reading data
-
-- You can install PySpark from the jupyter noteboo directly like:
-  - !pip install pyspark
+* You can install PySpark from the jupyter notebook directly like:
+  `!pip install pyspark`
