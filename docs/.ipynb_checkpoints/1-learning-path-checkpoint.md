@@ -17,7 +17,6 @@
     - `withColumn`, `drop`, `distinct`
     - Sorting: `orderBy`, `sort`
 - **Data Types and Schemas**
-- - **Handling Missing Data (`dropna`, `fillna`)**
 
 ---
 
@@ -25,7 +24,7 @@
 
 - **Aggregations and GroupBy**
 - **Joins (inner, left, right, outer)**
-
+- **Handling Missing Data (`dropna`, `fillna`)**
 - **User-Defined Functions (UDFs)**
 
 ---
