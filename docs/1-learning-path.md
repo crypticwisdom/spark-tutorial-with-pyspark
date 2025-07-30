@@ -25,7 +25,6 @@
 
 - **Aggregations and GroupBy**
 - **Joins (inner, left, right, outer)**
-
 - **User-Defined Functions (UDFs)**
 
 ---
@@ -62,7 +61,7 @@
 
 ---
 
-Spark AQE, coalesce, repartitioning,
+- Spark AQE, coalesce, repartitioning,
 
 Resource I found:
 
@@ -71,3 +70,23 @@ https://sparkbyexamples.com/
 [1. Guide to Apache Spark](https://www.notion.so/1-Guide-to-Apache-Spark-228001fbed0d80bca0f1e262db701313?pvs=21)
 
 [2. Apache Spark Architecture](https://www.notion.so/2-Apache-Spark-Architecture-22a001fbed0d805784d2f49f9222354d?pvs=21)
+
+## What I have to covered:
+Spark basics and PySpark.
+Spark Architecture: Driver, Executor and Cluster Manager.
+Spark UI, DAG and Job Monitoring.
+Spark Configurations.
+Executor/Cluster Tuning/Optimization.
+
+## **Optimization Techiniques in Spark:**
+What user can do to Optimize Spark:
+- Use optimized format for storaging data, like parquet, delta, instead of CSV
+- Avoid expensize operations like sort
+- Minimize volume of data
+- Cache/Persist dataframes
+- Repartition/Coalsce
+- Avoid UDFs
+- Partition and/or index data
+- Bucketing
+- Optimize Cluster
+- ...

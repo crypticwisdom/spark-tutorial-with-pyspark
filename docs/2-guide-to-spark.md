@@ -38,7 +38,7 @@ Apache Spark is an open-source distributed data processing engine for large data
 - **Production:** Kubernetes for scalable deployments.
 
 ## 🏗 **Apache Spark Architecture Explained**
-
+> Driver and Executors are processes that run on JVM.
 Apache Spark follows a **driver-executor** architecture managed by a **cluster manager** (like YARN or Kubernetes). The main components are:
 
 ---
@@ -101,7 +101,7 @@ The cluster manager:
 2. **Driver Initialization:**
     - The driver registers with the cluster manager.
     - It instantiates a `SparkSession` (which embeds `SparkContext`, `SQLContext`).
-    - Builds a **logical plan** based on your transformations.
+    - Builds a **logical plan** based on your transformations. (lives in Driver memory)
 3. **Resource Allocation:**
     - Driver requests resources (executors) from the cluster manager.
 4. **Executor Launch:**
