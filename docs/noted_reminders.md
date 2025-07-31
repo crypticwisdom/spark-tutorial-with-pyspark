@@ -9,6 +9,7 @@
 > Executor   = Worker
 
 
+
 ### 🧩 Caching & Memory Notes
 
 - If you call `.cache()` or `.persist()`, Spark stores intermediate results **in executor memory**.

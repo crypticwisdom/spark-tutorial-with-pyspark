@@ -339,6 +339,7 @@ spark = SparkSession.builder.appName("MyApp").getOrCreate()
 
 # *When you write PySpark code using spark.read… or df.select… or spark.sql(…), you’re using that SQL layer—your code gets optimized, and you benefit from faster predicate pushdown, vectorized I/O, and Catalyst-driven planning, while still running on the same Core engine under the covers.*
 ```
+
 **Use local[*] During testing or Development**: local[*], local[4]; where 4 is the Number of CPU core you want sprak to utilize.
 - Apply cluster configs via `spark-submit` if you want to override Default Spark Configuration. 
 **Example Spark-Submit for Kubernetes:**

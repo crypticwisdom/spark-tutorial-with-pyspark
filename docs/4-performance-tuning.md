@@ -4,6 +4,7 @@
 **Definition:**
 Optimization refers to **writing Spark code and designing data pipelines in a way that avoids performance pitfalls** and leverages Spark's internal optimizations.
 
+
 ### 🛠️ Optimization Techniques include:
 
 What user can do to Optimize Spark:

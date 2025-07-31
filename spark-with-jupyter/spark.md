@@ -9,6 +9,7 @@
 * **Provides all the Spark CLI tools** (`pyspark`, `spark-submit`, etc.).
 * **Works seamlessly with Jupyter Notebook** for interactive learning.
 
+
 ---
 
 ## **What You Can Do Now**

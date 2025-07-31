@@ -417,6 +417,7 @@ The DAG structure you see in the Spark SQL /Dataframe section of the UI, is not 
 - ...
 
 
+
 ## **Data Shuffling:**
 - This is the process of redistributing data across partitions, and typically involves data exchange between executor nodes.
 - Wide transformations, require shuffling

@@ -1,3 +1,6 @@
 venv/
 docs/.ipynb_checkpoints/
 spark-with-jupyter/.ipynb_checkpoints/
+git-filter-repo.py
+git-filter-repo*
+git-filter-repo
