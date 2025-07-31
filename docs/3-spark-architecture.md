@@ -182,7 +182,7 @@ Summary:
 The type of transformation we are doing will denote whether we need a shuffle.
 **Wide transformation:** This type of transformation can't be done on a single executor, it has to move data from executors, shuffle it around, change how that data is chunked up, put it back on those executors.
 
-If I have written a bunch of transformation on a DF and then I specify an action '.show()' on that DF. It will traverse upward to the list of used transformation that has to be done on the DF (Narrow and Wide trans), and then, it make a query plan, and in that plan any time it is having to shuffle data, a new stage is created (which is handling a number of tasks). Each time there is a shuffle, there will be a new stage with a new number of tasks to be executed by executors.
+If I have written a bunch of transformation on a DF and then I specify an action `.show()` on that DF. It will traverse upward to the list of used transformation that has to be done on the DF (Narrow and Wide trans), and then, it make a query plan, and in that plan any time it is having to shuffle data, a new stage is created (which is handling a number of tasks). Each time there is a shuffle, there will be a new stage with a new number of tasks to be executed by executors.
 
 As the processes moves to the next stage, other tasks from the previous stages are taken out so that new tasks from the new stage can run (task can be more than 1, and 1 task is ran on 1 slot (CPU core)).
 
