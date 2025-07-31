@@ -48,7 +48,9 @@ Our application communicates with the Driver through spark session, Driver takes
 * **Cluster**: Driver and Executors both run in the cluster. Suitable for production.
 
 
+
 ---
+
 
 
 ## Transformations and Actions
