@@ -1,1 +1,3 @@
 venv/
+docs/.ipynb_checkpoints/
+spark-with-jupyter/.ipynb_checkpoints/

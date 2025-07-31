@@ -1,92 +1,114 @@
 # **Recommended Learning Path (PySpark + Spark in Jupyter)**
 
-### **1. Spark and PySpark Fundamentals**
+---
 
-- **What is Spark? What is PySpark?**
-- **Spark’s Architecture:** Driver, Executors, Cluster Manager (you’ll start with “local” mode)
-- **RDDs vs DataFrames vs Datasets** (DataFrames are the main focus for Python)
+### **Spark and PySpark Fundamentals**
+
+- [x]  **What is Apache Spark? What is PySpark?**
+- [x] **Why Spark? (Intro)**
+  - [x] **Spark Modules**
+  - [x] **Batch vs Streaming**
+- [x]  **Apache Spark’s Architecture:** Driver, Executors, Cluster Manager
+- [x] **Lifecycle of a Spark Job**
+- [x] **Core Spark Abstractions (RDD, Dataframe and Dataset)**
+  *(DataFrames are primary in PySpark)*
+- [x] **Spark Contexts (SparkSession, SparkContext, SQLContext, HiveContext)**
+- **Execution Modes (✅ This decides where Spark runs and who manages the resources.) (Local, Standalone, YARN, Kubernetes)**
+- [x] **Deployment Modes (✅ This determines where the driver lives and how it talks to the executors.)** (Local, Client, Cluster)
+- [ ] **Monitoring and Debugging**
+- [ ] **Best Practices for PySpark in Production**
+  
 
 ---
 
-### **2. The Basics (with Examples in Jupyter)**
 
-- **Starting a SparkSession**
-- **Creating DataFrames from Python objects, CSV, and Parquet files**
-- **Basic DataFrame Operations:**
-    - `select`, `filter`, `where`
-    - `withColumn`, `drop`, `distinct`
-    - Sorting: `orderBy`, `sort`
-- **Data Types and Schemas**
-- - **Handling Missing Data (`dropna`, `fillna`)**
+### The Basics (with Examples in Jupyter)**
 
----
+- [x]  **Starting a SparkSession**
+- [x]  **Creating DataFrames from Python objects, CSV, and Parquet**
+- [ ] **Basic DataFrame Operations:**
+  - [x] `select`, `filter`, `where`
+  - [x] `withColumn`, `drop`, `distinct`
+  - [ ] Sorting: `orderBy`, `sort`
+- [ ] **Data Types and Schemas**
+- [x] **Handling Missing Data (`dropna`, `fillna`)**
 
-### **3. Intermediate Data Operations**
+- **Intermediate Data Operations**
+  - [ ] **Aggregations and GroupBy**
+  - [ ] **Joins (inner, left, right, outer)**
+  - [ ] **User-Defined Functions (UDFs)**
+  - [ ] **Null handling, type casting, string functions**
 
-- **Aggregations and GroupBy**
-- **Joins (inner, left, right, outer)**
-- **User-Defined Functions (UDFs)**
+- **SQL with Spark**
+  - [ ] **Registering DataFrames as Temp Views**
+  - [ ] **Running SQL Queries with `spark.sql()`**
 
----
-
-### **4. SQL with Spark**
-
-- **Register Dataframes as temporary tables**
-- **Run SQL queries inside Spark**
-
----
-
-### **5. Data Ingestion and Output**
-
-- **Reading/Writing CSV, JSON, and Parquet files**
-- **Basic introduction to S3/minio storage or HDFS**
+- **Data Ingestion and Output**
+  - [ ] **Reading/Writing CSV, JSON, Parquet, Delta**
+  - [ ] **Partitioned and Bucketed Writes**
+  - [ ] **Intro to external storage (S3/MinIO, HDFS)**
 
 ---
 
-### **6. Advanced:**
 
-- **Spark Streaming with PySpark**
-- **Window functions**
-- **Performance tuning: partitions, caching, broadcast joins**
-- **Working with Big Data on real datasets**
+### Spark Execution and DAGs
 
----
-
-## **Learning Strategy**
-
-- **Follow along with official and community tutorials in your own notebook.**
-- **Tweak the code and try new things after each example.**
-- **Document what you learn with markdown cells** (“# This cell shows filtering”, etc.).
-- Try your own ideas as you go!
+- [ ] **What is a DAG (Directed Acyclic Graph)?**
+- [ ] **What happens when you call an action?**
+- [ ] **Spark UI: Jobs, Stages, and Tasks**
+- [ ] **Understanding Logical Plan → Optimized Logical Plan → Physical Plan**
+- [ ] **Wide vs Narrow Transformations**
+- [ ] **Monitoring and Debugging**: Spark UI, DAG, Execution Plan
 
 ---
 
-- Spark AQE, coalesce, repartitioning,
+### Optimization and Performance Tuning
 
-Resource I found:
+✅ **Understand the terms first:**
 
-https://sparkbyexamples.com/
+- [ ] **Spark Configuration** → Settings that control Spark's behavior; key-value.
+- [ ] **Spark Configuration Tuning** → Adjusting configs (e.g., memory, cores)
+- [ ] **Spark Tuning** → Adjusting partitioning, shuffles, executors
+- [ ] **Spark Optimization** → Writing efficient code (e.g., avoid UDFs, use `select`)
+- [ ] **Performance Tuning** → All of the above + UI analysis
 
-[1. Guide to Apache Spark](https://www.notion.so/1-Guide-to-Apache-Spark-228001fbed0d80bca0f1e262db701313?pvs=21)
+---
 
-[2. Apache Spark Architecture](https://www.notion.so/2-Apache-Spark-Architecture-22a001fbed0d805784d2f49f9222354d?pvs=21)
+🔧 **Optimization Techniques:**
 
-## What I have to covered:
-Spark basics and PySpark.
-Spark Architecture: Driver, Executor and Cluster Manager.
-Spark UI, DAG and Job Monitoring.
-Spark Configurations.
-Executor/Cluster Tuning/Optimization.
+- [ ] Use optimized formats: Parquet, Delta
+- [ ] Partition/Coalesce wisely
+- [ ] Cache/Persist data when reused
+- [ ] Avoid UDFs unless necessary
+- [ ] Use broadcast joins carefully
+- [ ] Reduce shuffle with good key distribution
+- [ ] Tune configs: memory, cores, partitions
+- [ ] Understand Spark UI and troubleshoot slow jobs
+- [ ] Leverage AQE (Adaptive Query Execution)
+- [ ] Optimize cluster resources
 
-## **Optimization Techiniques in Spark:**
-What user can do to Optimize Spark:
-- Use optimized format for storaging data, like parquet, delta, instead of CSV
-- Avoid expensize operations like sort
-- Minimize volume of data
-- Cache/Persist dataframes
-- Repartition/Coalsce
-- Avoid UDFs
-- Partition and/or index data
-- Bucketing
-- Optimize Cluster
-- ...
+---
+
+### Advanced Topics (Optional but Powerful)
+
+- [ ] **Window Functions**
+- [ ] **Spark Streaming (Structured Streaming)**
+- [ ] **Working with Big Data at scale**
+- [ ] **Using Spark with MLlib (for machine learning)**
+- [ ] **Delta Lake, Iceberg (modern data lake formats)**
+- [ ] **Deploying Spark apps (K8s, YARN)**
+
+---
+
+## 🧠 Learning Strategy
+
+- Use **Jupyter notebooks or Databricks notebooks**
+- **Tweak code and experiment after each example**
+- Add markdown comments like “# filter example” to reinforce learning
+- Follow **Spark UI** alongside your runs to understand what happens
+- Study slow runs → optimize → compare
+
+---
+
+## All Resources Used:
+- Name: ...; Link:

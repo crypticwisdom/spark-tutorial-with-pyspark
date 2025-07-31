@@ -4,13 +4,21 @@
 **Definition:**
 Optimization refers to **writing Spark code and designing data pipelines in a way that avoids performance pitfalls** and leverages Spark's internal optimizations.
 
-### 🛠️ Techniques include:
+### 🛠️ Optimization Techniques include:
 
-* Using efficient formats like Parquet/Delta
-* Reducing shuffle with partitioning and bucketing
-* Using `.cache()` / `.persist()` wisely
-* Avoiding UDFs when possible
-* Filtering early, selecting only needed columns
+What user can do to Optimize Spark:
+- Use optimized format for storaging data, like parquet, delta, instead of CSV
+- Avoid expensize operations like sort
+- Minimize volume of data
+- Cache/Persist dataframes
+- Repartition/Coalsce
+- Avoid UDFs
+- Partition and/or index data
+- Bucketing
+- Optimize Cluster
+- Filtering early, selecting only needed columns
+- ...
+
 
 ### 💡 Also includes:
 

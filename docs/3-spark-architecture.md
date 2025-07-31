@@ -23,7 +23,7 @@
 
 ---
 
-Say we have a data we want to analyze and have written the application in (Python, Java, SQL, Scala, R), The application is submitted and it communicates with the Driver through Spark Session which is the only entry point for Spark, the driver parses the application and analyzes what we want to do with the data and also it will figure out the most efficient way of doing it (catalyst optimizer -> creates optimized logical plan), it will then split (DAGs into Stages then stages in tasks) it into tasks (task, data partition info, conf, distributed variables), which will be distributed to the executors (each exec. process these in parallel, multiple tasks as the number of slots: numbers of slots = total number of cpu cores).
+Say we have a data we want to analyze and have written the application in (Python, Java, SQL, Scala, R), The application is submitted and it communicates with the Driver through Spark Session which is the only entry point for Spark, the driver parses the application and analyzes what we want to do with the data and also it will figure out the most efficient way of doing it (catalyst optimizer -> creates optimized logical plan), it will then split (DAGs into Stages then stages into tasks) it into tasks (task, data partition info, conf, distributed variables), which will be distributed to the executors (each exec. process these in parallel, multiple tasks as the number of slots: numbers of slots = total number of cpu cores).
 
 Say we have 2 executors with 4 cores each, each executor is able to process 4 task in parallel, the driver sends tasks to the executor and it also sends information a bout which executor would process/analyze which part of the data. Then executor grab the data and exchange the information between each other (if needed) and then send the results to the driver or writes to somewhere else.
 
@@ -35,45 +35,21 @@ Our application communicates with the Driver through spark session, Driver takes
 
 
 
-### Example Workflow:
-
-1. You write code using transformations (e.g. `.filter()`, `.groupBy()`).
-2. Spark parses it into a **Logical Plan**.
-3. When you call an **action** (e.g., `.collect()`), Spark optimizes the plan, converts it to a **Physical Plan**, splits it into a **DAG** of **Stages**, then breaks stages into **Tasks**.
-4. Tasks are sent to Executors for parallel execution.
-5. Results are returned to the Driver or written to storage.
 
 ---
 
-## Spark Deployment Modes - 
+
+
+
+## Spark Deployment Modes
 
 * **Local**: Driver and Executors run on the same machine. Ideal for testing.
 * **Client**: Driver runs on your local machine, Executors run on the cluster.
 * **Cluster**: Driver and Executors both run in the cluster. Suitable for production.
 
----
-
-## RDDs, DataFrames, and Datasets
-
-* **RDD (Resilient Distributed Dataset)**:
-
-  * Low-level, immutable distributed collection of objects.
-  * Provides fine-grained control, fault-tolerance, and lineage.
-  * Created from `SparkContext`. (Spark Core Engine)
-  * You can find details of any application using RDD in Job and Stages section in the UI.
-
-* **DataFrame**:
-
-  * High-level abstraction similar to a SQL table.
-  * Built on top of RDDs and optimized using the Catalyst optimizer.
-  * Created from `SparkSession.read()`.
-  * You can find details of any application using DF/DS in Job, Stages, Spark SQL/Dataframe section in the UI.
-
-* **Dataset**: Combines the benefits of RDD and Dataframe, offering a strongly-typed object oriented API with optimization capabilities of dataframes.  Created from SparkSession (Spark SQL Module)
-
-Dataframe and Dataset (Scala) are Optimized by the Catalyst Optmizer in Spark and these Abstraction are created from Spark SQL also Structured API.
 
 ---
+
 
 ## Transformations and Actions
 
@@ -104,24 +80,30 @@ Dataframe and Dataset (Scala) are Optimized by the Catalyst Optmizer in Spark an
 
 ## Jobs, Stages, and Tasks
 Based on general rule: When we submit application to the driver, it splits the application into 1 or more Jobs, usually these Jobs runs 1 after the other, inside each job we have 1 or more stages, and stage 2 can start only after stage 1 is done, and each stage hold multiple tasks, and these tasks are sent to each CPU core of executors to run in parallel. And the reason for multiple stages is because APache Spark tries to compact all the transformation which does not require data shuffling into 1 stage (narrow transformation), and then only when the shuffling is requred then the new stage will be created.
-The above is an explanation based on the DAG flow, stages shown in DAG UI holds narrow transformations and only when there is a SHuffle you will then find a line which moves fromthe first stage to another new stage.
+The above is an explanation based on the DAG flow, stages shown in DAG UI holds narrow transformations and only when there is a Shuffle you will then find a line which moves fromthe first stage to another new stage.
 
-* **Job**: Triggered by an action. Represents the full execution of a DAG.
+* **Job**: Triggered by an action operation in code, unless cache. Represents the full execution of a DAG.
 * **Stage**: A set of tasks that can be executed together. Created when a wide transformation (like shuffle) is encountered.
 * **Task**: Smallest unit of work. One task per data partition.
 
-### Execution Flow:
-
-1. User calls an **action** -> **Job** created.
-2. Spark divides Job into **Stages** based on wide transformations.
-3. Each Stage is divided into **Tasks**.
-4. Tasks are scheduled to **Executors** based on available CPU cores.
-
 > Example: With 2 executors having 4 cores each, 8 tasks can run in parallel.
+
+
+
+
+
 
 ---
 
-## Understanding DAG
+
+
+
+
+
+
+
+
+## Understanding DAG (Directed Acyclic Graph)
 
 ### DAG in Spark:
 
@@ -163,56 +145,6 @@ The Spark UI (4040) shows a DAG Visualization of how spark broke your code into:
 
 ---
 
-## Spark Planning:
-- Start with: Logical Planning:
-  - when:
-    - As soon as the driver reads your spark code transformation on RDD/DF/DS.
-  - What it does:
-    - Spark at this stage builds a logical DAG of all transformations
-    - This is a high-level recipe of "what needs to happen", but not yet, how.
-    **E.g.:** .read(), .filter(), groupBy(), .count() ...
-    Logical plan will look like: `Read CSV -> Filter(Condition) -> GroupBy -> count()`
-    This is not represented as a DAG yet;
-    But no execution is carried out because it not the end of spark processing, NEXT (Optimization)
-
-- Then: Optimization (Catalyst Optimizer):
-  - WHEN: Still before any execution; Spark applies its Catalyst Optimizer.
-  - What it does:
-    - Looks at the Logical plan, re-writes it for Efficiency:
-      - Combines multiple filters (.filter().filter(), into 1 filter())
-      - Push down filter to the source (e.g., only load rows with column used in filter condition)
-      - Choose the best join strategies (Broadcast joins VS shuffle joins)
-    After this Spark has an Optimized Logical Plan
-
-- Then: Physical Planning
-  - What it is: Spark figure and hold:
-    - What algorithm to use (HASH join, sort, merge, e.t.c)
-    - How to split work across executors
-  - Result: A Physical plan.
-
-- DAG Scheduler: BUilding the execution DAG
-  - when: after an action is called
-  - what it does: 
-    - Takes Physical plan and turns it into a DAGof stages
-    - Stages are separated by WIDE transformations (groupBy, Join, sort, ...) because those require shuffling.
-
-- Task Scheduling:
-  - What happens:
-    - The DAG Scheduler hands each stage to the Task Scheduler 
-    - The task scheduler created tasks (One per partition) and ships them to executors
-  - Execution starts after the executor collects the task, processes it and write to storage or return to Driver.
-  
-Important Notes:
-- Logical, Optimized and Physical Planning happen when you define transformations but they stay as plans only.
-- Execution (Jobs/Stage/Tasks) only starts when an action is called.
-- `Code -> Logical Plan -> Optimizer (Optimized Logical Plan) -> Physical Plan -> DAG Scheduler -> Task Scheduler -> Executors`
-
-- DAG visualization shows, optimized logical plan turned in execution DAG (What Spark will actually run)
-- logical plans are not shown in UI
-- what are the 3 plans represented as?
-  - Logical Plan -> Only exists in driver (not shown in UI)
-  - Optimized Logical Plan -> Basis for the execution DAG
-  - Physical Plan -> Also not directly
 Summary:
   - UI shows 1 high-level DAG per Job (shows the whole job flow).
   - Stage DAGs under each job (shows how the job is split into stages).
@@ -225,47 +157,6 @@ Summary:
 * Multiple actions on the same un-cached dataset = multiple jobs.
 
 > Analogy: Writing code builds a plan. Calling an action is like hitting "Run" on a machine.
-
----
-
-## Final Notes:
-
-* `.read()` is a **data source definition**, not a transformation.
-* The DAG shown in Spark UI is the **optimized execution DAG**, not the original logical plan.
-* Planning happens on the **Driver**, execution happens on **Executors**.
-
-```python
-  df = spark.read.json("data.json")  # Defines source, no job yet
-  df_filtered = df.filter("age > 30")  # Transformation, lazy
-  df_filtered.show()  # Action -> triggers job, stages, tasks
-```
-
----
-
-Proper Flow:
-
-```
-Your Code
-   ↓
-Logical Plan (Unresolved) — created by the Catalyst Analyzer
-   ↓
-Optimized Logical Plan — via Catalyst Optimizer
-   ↓
-Physical Plan — multiple options generated
-   ↓
-Selected Physical Plan — Spark picks the best one
-   ↓
-DAG Scheduler builds an Execution DAG (from physical plan)
-   ↓
-Job(s) — 1 per action
-   ↓
-Stage(s) — separated by shuffle boundaries (wide transformations)
-   ↓
-Tasks — 1 per data partition
-   ↓
-Executors — tasks are executed here
-
-```
 
 ---
 
@@ -297,7 +188,7 @@ As the processes moves to the next stage, other tasks from the previous stages a
 
 
 
-### DAG in UI:
+### DAGs in UI:
 - **Execution DAG (Job DAG):** Full DAG for a job; includes all stages. Found in Jobs tab; This shows the entire execution plan of a Job, the diagram shows 1 or more block (stages and its tasks and operations (nodes) that spark will perform within that specific stage). If a Job has more than 1 stages in it, the diagram show a linked line between each stages which represents a shuffle.
 Stages are caused by shuffles, and in each stage, spark tries to combine all narrow transformation into 1 stage. And Jobs are caused by action call.
 - **Stage DAG:** Breakdown of internal RDD operations in a single stage. shows transformation chain of RDDs; This is the internal plan for a specific stage, showing how RDDs and transformations (like mapPartitions) are connected.
@@ -345,3 +236,167 @@ What user can do to Optimize Spark:
 - AQE: dynamically adjust query execution based on runtime conditions.
 
 ...
+
+
+
+
+
+
+
+## ✅ Apache Spark Execution Flow
+
+Let’s use this example as a reference:
+
+```python
+  df = spark.read.parquet("s3://data").filter("age > 25").select("name")
+  df.show()
+```
+
+---
+
+## 🔷 1. **User Code Definition (in Driver Program)**
+
+* You write **transformations** (`read`, `filter`, `select`) and **actions** (`show()`).
+* These operations are **lazy** — they’re not executed until an **action** is called.
+
+✅ At this point, a **DataFrame** object is created, which contains an **Unresolved Logical Plan**.
+
+---
+
+## 🔷 2. **Catalyst Analyzer (Analysis Phase)**
+
+* Spark uses the **Catalyst Analyzer** (part of the Catalyst optimizer) to:
+
+  * Validate and resolve column names, data sources, aliases, and types.
+
+🧠 Converts:
+
+> **Unresolved Logical Plan** → **Resolved Logical Plan**
+
+---
+
+## 🔷 3. **Catalyst Optimizer (Optimization Phase)**
+
+* Spark applies **rule-based optimizations** to the resolved plan:
+
+  * Filter pushdown
+  * Constant folding
+  * Column pruning
+  * Join reordering
+
+🧠 Converts:
+
+> **Resolved Logical Plan** → **Optimized Logical Plan**
+
+---
+
+## 🔷 4. **Physical Planning**
+
+* Spark generates multiple **Physical Plans** (possible execution strategies).
+* A **Cost-Based Optimizer (CBO)** selects the best plan based on metrics like:
+
+  * Shuffle size
+  * Join strategy
+  * Memory footprint
+
+🧠 Converts:
+
+> **Optimized Logical Plan** → **Best Physical Plan**
+
+---
+
+## 🔷 5. **DAG Generation (Execution Plan)**
+
+* The chosen physical plan is transformed into a **DAG (Directed Acyclic Graph)** of stages and tasks.
+* Each node in the DAG is a computation step.
+* Spark identifies **stage boundaries** based on **wide transformations** (e.g., `join`, `groupBy`), which involve **shuffles**.
+
+---
+
+## 🔷 6. **DAG Scheduler (Job & Stage Creation)**
+
+* On triggering the **action** (like `.show()`):
+
+  * Spark submits a **job** to the DAG Scheduler.
+  * The job is split into **stages**, depending on shuffle boundaries.
+  * Each stage is composed of **tasks**, one for each partition of the input data.
+
+💡
+
+| Term      | Trigger/Event                        |
+| --------- | ------------------------------------ |
+| **Job**   | Triggered by an **action**           |
+| **Stage** | Created at each **shuffle boundary** |
+| **Task**  | One task per partition per stage     |
+
+---
+
+## 🔷 7. **Task Scheduler & Cluster Manager**
+
+* The **Task Scheduler** sends the tasks to the **Cluster Manager** (YARN, Kubernetes, Mesos, or Standalone).
+* The **Cluster Manager** allocates resources (executors on worker nodes).
+
+---
+
+## 🔷 8. **Execution on Executors**
+
+* Each **executor**:
+
+  * Pulls the required **partition** of the data.
+  * Runs the task logic (e.g., filter, project, shuffle, write).
+  * Sends results back to the driver (if needed) or writes to external storage.
+
+Executors also:
+
+* Cache/persist data (if requested)
+* Spill to disk if memory is exceeded
+* Write shuffle files to disk during wide transformations
+
+---
+
+## ✅ End-to-End Diagram
+
+```
+User Code
+   ↓
+Unresolved Logical Plan (DataFrame holds this)
+   ↓
+Catalyst Analyzer
+   ↓
+Resolved Logical Plan
+   ↓
+Catalyst Optimizer
+   ↓
+Optimized Logical Plan
+   ↓
+Physical Plan Generation
+   ↓
+DAG of Execution Plan
+   ↓
+DAG Scheduler → Jobs → Stages (split on shuffle)
+   ↓
+Task Scheduler → Tasks per partition
+   ↓
+Cluster Manager allocates resources
+   ↓
+Executors execute tasks (pull partition → compute → write)
+```
+
+---
+
+## ✅ Summary Table
+
+| Stage              | Output                  | Notes                                          |
+| ------------------ | ----------------------- | ---------------------------------------------- |
+| Code Definition    | Unresolved Logical Plan | DataFrame created, no data yet                 |
+| Catalyst Analyzer  | Resolved Logical Plan   | Validates and resolves names and schemas       |
+| Catalyst Optimizer | Optimized Logical Plan  | Applies optimization rules                     |
+| Physical Planning  | Best Physical Plan      | Chooses execution strategy                     |
+| DAG Generation     | DAG of Stages/Tasks     | Defines execution graph                        |
+| DAG Scheduler      | Job → Stages → Tasks    | Based on actions and shuffle boundaries        |
+| Task Scheduler     | Task Submission         | Sends tasks to available executors             |
+| Executors          | Task Execution          | Reads data, processes, writes/shuffles results |
+
+---
+
+Let me know if you want a **graphical diagram**, **timeline animation**, or even **visual comparison with SQL execution**.
