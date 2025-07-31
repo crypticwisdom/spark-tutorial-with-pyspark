@@ -15,9 +15,7 @@
 - [x] **Spark Contexts (SparkSession, SparkContext, SQLContext, HiveContext)**
 - **Execution Modes (✅ This decides where Spark runs and who manages the resources.) (Local, Standalone, YARN, Kubernetes)**
 - [x] **Deployment Modes (✅ This determines where the driver lives and how it talks to the executors.)** (Local, Client, Cluster)
-- [ ] **Monitoring and Debugging**
-- [ ] **Best Practices for PySpark in Production**
-  
+
 
 ---
 
@@ -53,12 +51,13 @@
 
 ### Spark Execution and DAGs
 
-- [ ] **What is a DAG (Directed Acyclic Graph)?**
-- [ ] **What happens when you call an action?**
-- [ ] **Spark UI: Jobs, Stages, and Tasks**
-- [ ] **Understanding Logical Plan → Optimized Logical Plan → Physical Plan**
-- [ ] **Wide vs Narrow Transformations**
-- [ ] **Monitoring and Debugging**: Spark UI, DAG, Execution Plan
+- [x] **What is a DAG (Directed Acyclic Graph)?**
+- [x] **What happens when you call an action?**
+- [x] **Spark UI: Jobs, Stages, and Tasks**
+- [x] **Understanding Spark Execution Flow**
+- [x] **Wide vs Narrow Transformations**
+- [ ] **Monitoring and Debugging**: Spark UI, Reading DAG, Reading Execution Plan.
+
 
 ---
 
@@ -71,6 +70,8 @@
 - [ ] **Spark Tuning** → Adjusting partitioning, shuffles, executors
 - [ ] **Spark Optimization** → Writing efficient code (e.g., avoid UDFs, use `select`)
 - [ ] **Performance Tuning** → All of the above + UI analysis
+- [ ] **Best Practices for PySpark in Production**
+  
 
 ---
 
