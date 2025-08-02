@@ -20,8 +20,7 @@
 ---
 
 
-### The Basics (with Examples in Jupyter)**
-
+### CODE: The Basics (with Examples in Jupyter)**
 - [x]  **Starting a SparkSession**
 - [x]  **Creating DataFrames from Python objects, CSV, and Parquet**
 - [ ] **Basic DataFrame Operations:**
@@ -56,7 +55,7 @@
 - [x] **Spark UI: Jobs, Stages, and Tasks**
 - [x] **Understanding Spark Execution Flow**
 - [x] **Wide vs Narrow Transformations**
-- [ ] **Monitoring and Debugging**: Spark UI, Reading DAG, Reading Execution Plan.
+- [ ] **Monitoring and Debugging**: Spark UI, Reading DAG, Reading Query Plans
 
 
 ---

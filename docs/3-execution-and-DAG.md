@@ -2,7 +2,7 @@
 
 **Resources used:**
 - (NOTES FROM TUTORIAL - EMIL KAMINSKI) : [Youtube link](https://www.youtube.com/watch?v=iXVIPQEGZ9Y&list=PL19TxVqoJEnSWDIkyI8va3njcLrVKDfc9&index=3)
-- 
+- (Reading and Understanding DAG: https://youtu.be/O_45zAz1OGk?si=ZpqtZzTHGiBM5fxv)
 
 
 **Spark Flavours on Cloud:** -
@@ -405,7 +405,10 @@ Where?: **SQL/DataFrame Tab** → Click on a query → View Physical/Logical Pla
 
 
 
-Sections below are pending ...
+
+
+
+Sections below are pending from EMIL KAMINSKI: https://www.youtube.com/watch?v=iXVIPQEGZ9Y&list=PL19TxVqoJEnSWDIkyI8va3njcLrVKDfc9&index=4 ...
 
 
 ---
