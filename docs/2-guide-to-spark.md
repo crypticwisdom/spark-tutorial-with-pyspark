@@ -1,8 +1,6 @@
-# 1. Guide to Apache Spark
+# 1. Spark Fundamentals
 
 ---
-
-# Spark Fundamentals:
 
 ## 📌 1. **Introduction to Apache Spark**
 
@@ -17,6 +15,8 @@ Think of Spark’s “modules” not as totally separate engines, but as **bundl
 
 - **Spark Core:**  is the **foundational engine** of Apache Spark. Foundation handling basic I/O, task scheduling, memory management, and recovery.
 - **Spark SQL:** DataFrame/Dataset abstraction, SQL semantics, schema support, and optimization via Catalyst.
+    - With Spark SQL, you can register any DataFrame as a table or view (a temporary table) and query it using pure SQL. There is no performance difference between writing SQL queries or writing DataFrame code, they both “compile” to the same underlying plan that we specify in DataFrame code.
+    - 3 types of tables:.createOrReplaceTempView, .createOrReplaceGlobalTempView, df.write.saveAsTable("my_table"): Permernent table save on hive, it hive is enabled.
 - **Structured Streaming:** DataFrame-based streaming queries.
 - **MLlib:** ML algorithms and pipeline utilities.
 - **GraphX:** Graph computation engine using RDDs.
@@ -108,6 +108,10 @@ The **Driver** is the **master coordinator** for a Spark application. It perform
 - Scheduling and sending **tasks** to executors.
 - Tracking task execution and handling **failures**.
 - Collecting **results**, maintaining **metrics**, and managing **lineage**.
+- 
+`Responsible for three things:
+maintaining information about the Spark Application; responding to a user’s program or input;
+and analyzing, distributing, and scheduling work across the executors`
 
 **🧠 Note:**
 
@@ -159,40 +163,10 @@ The cluster manager:
 | **Executor** | Worker Node | Executes tasks, stores data partitions, communicates results back to the Driver. |
 
 
-
 ---
 
 
-
-## 🔄 3. **Lifecycle of a Spark Job**
-
-1. **Application Submission:**
-    - You submit your code via `spark-submit`.
-2. **Driver Initialization:**
-    - The driver registers with the cluster manager.
-    - It instantiates a `SparkSession` (which embeds `SparkContext`, `SQLContext`).
-    - Builds a **logical plan** based on your transformations. (lives in Driver memory)
-3. **Resource Allocation:**
-    - Driver requests resources (executors) from the cluster manager.
-4. **Executor Launch:**
-    - Executors start and **register back** with the driver.
-5. **Task Scheduling & Distribution:**
-    - Driver builds a DAG → splits into **stages** → splits stages into **tasks**.
-    - Sends **task code (not data)** to executors. (
-6. **Task Execution:**
-    - Executors read their partition of the data from source.
-    - Apply transformations and hold intermediate results in memory/disk.
-    - Write final results to storage or return them to the Driver.
-7. **Completion:**
-    - Once all tasks finish, driver shuts down executors.
-
-
-
----
-
-
-
-## 4 📂 **Core Spark Abstractions**
+## 3 📂 **Core Spark Abstractions**
 
 ### **1. RDD (Resilient Distributed Dataset)**
 
@@ -255,7 +229,7 @@ Combines the benefits of RDD and Dataframe, offering a strongly-typed object ori
 
 
 
-## 🧱 5. Spark Contexts (SparkSession, SparkContext, SQLContext, HiveContext)
+## 🧱 4. Spark Contexts (SparkSession, SparkContext, SQLContext, HiveContext)
 
 - `SparkSession` is the **new unified API entry point** from Spark 2.0 onward.
 - It wraps:
@@ -300,7 +274,7 @@ Approximately 90% of your work with Spark would be done using a SparkSession.
 
 
 
-## 🚦6. **Deployment Modes**
+## 🚦5. **Deployment Modes**
 `Where the driver lives after submitting job`
 - **Local Mode:** The driver and executors both live on your machine (so technically, it's also deployed locally). When `local[...]` is used. No cluster manager needed.
 - **Client Mode:** Driver runs locally or on the machine which run thee submit command; executors run on the cluster. Ideal for testing/debugging.
@@ -317,19 +291,17 @@ Approximately 90% of your work with Spark would be done using a SparkSession.
 | **Mesos** | Mesos | Legacy | `--master mesos://...` |
 
 
-
 ---
 
 
-
-## 📈 7. **Monitoring and Debugging**
+## 📈 6. **Monitoring and Debugging**
 
 - **Web UI:** Real-time job monitoring.
 - **History Server:** Post-execution log analysis.
 
+---
 
-
-## 🏠 8. Best Practices for PySpark in Production
+## 🏠 7. Best Practices for PySpark in Production
 
 - Do **NOT** set `.master("local[*]")` in production code
 **Do this For Production**

@@ -9,8 +9,7 @@
 > Executor   = Worker
 
 
-
-### 🧩 Caching & Memory Notes
+## 🧩 Caching & Memory Notes
 
 - If you call `.cache()` or `.persist()`, Spark stores intermediate results **in executor memory**.
 - Without `.cache()`, Spark will **recompute** the data each time it's needed.
@@ -19,7 +18,7 @@
     ```python
     df.unpersist()
     ```
-    
+
 - Cached data stays in memory until explicitly **unpersisted** or **evicted** (if memory is full or Spark cluster terminates).
 - Caching is an **optimization technique**, but can be **dangerous** in production if misused (memory pressure, stale data, etc.).
 - Cached data (Query plan) are stored in memory and can be found on the Spark UI (Storage/Memory section)

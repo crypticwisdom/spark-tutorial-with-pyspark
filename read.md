@@ -1,3 +1,8 @@
+Resources used:
+- EMIL KAMINSKI: https://www.youtube.com/watch?v=iXVIPQEGZ9Y&list=PL19TxVqoJEnSWDIkyI8va3njcLrVKDfc9&index=4 ...
+- https://www.youtube.com/watch?v=KnUXztKueMU&list=PLWAuYt0wgRcLCtWzUxNg4BjnYlCZNEVth
+
+
 # LEARNING PATH
 ## For learning, local development, and even small projects:
 
@@ -58,9 +63,4 @@
 
 ---
 
-
-# Krish Naik - PySpark Tutorial:
-### Installation and Reading data
-
-- You can install PySpark from the jupyter noteboo directly like:
-  - !pip install pyspark
+- !pip install pyspark

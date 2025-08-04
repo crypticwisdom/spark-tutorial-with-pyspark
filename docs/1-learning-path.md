@@ -9,16 +9,13 @@
   - [x] **Spark Modules**
   - [x] **Batch vs Streaming**
 - [x]  **Apache Spark’s Architecture:** Driver, Executors, Cluster Manager
-- [x] **Lifecycle of a Spark Job**
 - [x] **Core Spark Abstractions (RDD, Dataframe and Dataset)**
   *(DataFrames are primary in PySpark)*
 - [x] **Spark Contexts (SparkSession, SparkContext, SQLContext, HiveContext)**
 - **Execution Modes (✅ This decides where Spark runs and who manages the resources.) (Local, Standalone, YARN, Kubernetes)**
 - [x] **Deployment Modes (✅ This determines where the driver lives and how it talks to the executors.)** (Local, Client, Cluster)
 
-
 ---
-
 
 ### CODE: The Basics (with Examples in Jupyter)**
 - [x]  **Starting a SparkSession**
@@ -47,7 +44,6 @@
 
 ---
 
-
 ### Spark Execution and DAGs
 
 - [x] **What is a DAG (Directed Acyclic Graph)?**
@@ -57,9 +53,7 @@
 - [x] **Wide vs Narrow Transformations**
 - [ ] **Monitoring and Debugging**: Spark UI, Reading DAG, Reading Query Plans
 
-
 ---
-
 
 ### Optimization and Performance Tuning
 
@@ -67,13 +61,14 @@
 
 - [ ] **Spark Configuration** → Settings that control Spark's behavior; key-value.
 - [ ] **Spark Configuration Tuning** → Adjusting configs (e.g., memory, cores)
-- [ ] **Spark Tuning** → Adjusting partitioning, shuffles, executors
+- [x] **Spark Tuning** → Adjusting partitioning, shuffles, executors
 - [ ] **Spark Optimization** → Writing efficient code (e.g., avoid UDFs, use `select`)
 - [ ] **Performance Tuning** → All of the above + UI analysis
 - [ ] **Best Practices for PySpark in Production**
   
 
 ---
+
 
 🔧 **Optimization Techniques:**
 
@@ -112,4 +107,4 @@
 ---
 
 ## All Resources Used:
-- Name: ...; Link:
+- Name: ...; Link: ...;

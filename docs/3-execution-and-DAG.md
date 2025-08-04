@@ -5,11 +5,11 @@
 - (Reading and Understanding DAG: https://youtu.be/O_45zAz1OGk?si=ZpqtZzTHGiBM5fxv)
 
 
-**Spark Flavours on Cloud:** -
+**Spark Flavours on Cloud:**
 - databricks
 - google cloud dataproc
 - ibm watson studio
-- amazon emr
+- Amazon EMR
 - Microsoft Azure Databricks
 
 ---
@@ -42,6 +42,11 @@ Our application communicates with the Driver through spark session, Driver takes
 * **Immutable**: Each transformation creates a new dataset.
 
 #### Narrow vs Wide Transformations:
+A wide dependency (or wide transformation) style transformation will have input partitions
+contributing to many output partitions. You will often hear this referred to as a shuffle whereby
+Spark will exchange partitions across the cluster. With narrow transformations, Spark will
+automatically perform an operation called pipelining, meaning that if we specify multiple filters
+on DataFrames, they’ll all be performed in-memory
 
 * **Narrow**: Data is not shuffled. Each input partition maps to one output partition.
 
@@ -57,8 +62,16 @@ Our application communicates with the Driver through spark session, Driver takes
 * Examples: `collect()`, `count()`, `first()`, `take()`, `foreach()`, `saveAsTextFile()`
 
 > **Tip**: Actions **materialize** the computation. Without them, Spark will not compute anything.
+There are three kinds of actions:
+- Actions to view data in the console
+- Actions to collect data to native objects in the respective language
+- Actions to write to output data sources
 
-
+Transformations allow us to build up our logical transformation plan. To trigger the computation,
+we run an action. An action instructs Spark to compute a result from a series of transformations.
+At this point, all you need to understand is that a Spark job represents a set of
+transformations triggered by an individual action, and you can monitor that job from the Spark
+UI.
 
 ---
 
@@ -395,61 +408,3 @@ Where?: **SQL/DataFrame Tab** → Click on a query → View Physical/Logical Pla
 | **SQL/DataFrame** | Query Plan Tree          | Logical & physical query optimization | DataFrame or SQL Queries |
 
 ---
-
-
-
-
-
-
-
-
-
-
-
-
-
-Sections below are pending from EMIL KAMINSKI: https://www.youtube.com/watch?v=iXVIPQEGZ9Y&list=PL19TxVqoJEnSWDIkyI8va3njcLrVKDfc9&index=4 ...
-
-
----
-
-
-## **Laziness of Spark:**
-The DAG structure you see in the Spark SQL /Dataframe section of the UI, is not a DAG it is a Plan.
-- Here he talked about the .explain() used to view Spark Plan, Physical, Optimized .. Plans and also showed some examples in databrick UI. I will re-visit this and also watch What a support video for this.
-- ...
-
-
-
-## **Data Shuffling:**
-- This is the process of redistributing data across partitions, and typically involves data exchange between executor nodes.
-- Wide transformations, require shuffling
-- It requires saving data to disk, sending it over network and reading data from the disk
-- Data Shuffling can be very expensive
-- Sometimes it can be mitigated or avoided by even code changes, like for instance avoiding sorting the data
-- Nevertheless, it's often a "necessary evil".
-...
-
-
-## **Optimization:**
-What user can do to Optimize Spark:
-- Use optimized format for storaging data, like parquet, delta, instead of CSV.
-- Avoid expensize operations like sort
-- Minimize volume of data
-- Cache/Persist dataframes
-- Repartition/Coalsce
-- Avoid UDFs
-- Partition and/or index data
-- Bucketing
-- Optimize Cluster
-- ...
-
-
-
-### **Spark is Already doing alot for us:**
-- Catalyst Optimizer: handles logical and physical query plan optimizations.
-  - 
-- Tungsten Engine: provides low-level optimizations and code generation techniques to improve overall performance.
-- AQE: dynamically adjust query execution based on runtime conditions.
-
-...
