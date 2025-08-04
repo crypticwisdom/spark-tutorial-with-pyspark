@@ -1,5 +1,12 @@
-**Small Notes from, Spark the definitive guide:**
-- An action triggers a a single job in Spark.
+# **Short notes from Spark: the definitive guide:**
+
+## Chapter 1:
+...
+
+---
+
+## Chapter 2:
+- An action triggers a single job in Spark.
 - .read... will triggers a job to read metadata about the data being read, which is the first job spark triggers.
 - After applying business transformation to Spark Dataframe, and you use a `.explain` to view the plan for that transformation, it shows you the physical plan (the actual best physical execution plan), if you are okay with the plan you can go ahead and add your action `.write, .show...`, then spark will build a DAG based on the physical plan, sends it to the DAG scheduler which splits it into stages of tasks and these tasks are scheduled across executors.
 - There 2 types of operations, `Narrow` (does not require shuffling) and `Wide` (requires data shuffling accross executors).
@@ -13,11 +20,11 @@
   - Actions to collect data to native objects in the respective language
   - Actions to write to output data sources.
 - Reading data is a transformation, and is therefore a lazy operation. 
-- During data source reading, if `inferType` is True, Spark peeks at only a couple of rows of data to try to guess what types each column should be. You also have the option of strictly specifying a schema when you read in data (which we recommend in production
-scenarios)
+- During data source reading, if `inferType` is True, Spark peeks at only a couple of rows of data to try to guess what types each column should be. You also have the option of strictly specifying a schema when you read in data (which we recommend in production scenarios)
 
+---
 
-# Chapter 3: Gives an overview of what's possible in Spark:
+## Chapter 3: Gives an overview of what's possible in Spark:
 - Spark toolsets:
   - Structured Streaming
   - Advance Analytics

@@ -1,4 +1,4 @@
-# 1. Spark Fundamentals
+# Spark Fundamentals
 
 ---
 
@@ -29,7 +29,7 @@ Batch processing is when Spark reads a large, fixed dataset (bounded dataset), p
 Once the data is processed, the job ends. That's batch!
 
 **Example:**
-- Datawarehouse loading
+- Data Warehouse loading
 - Monthly Report Generation
 - Monthly billing
 

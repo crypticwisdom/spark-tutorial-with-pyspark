@@ -1,6 +1,6 @@
 Resources used:
 - EMIL KAMINSKI: https://www.youtube.com/watch?v=iXVIPQEGZ9Y&list=PL19TxVqoJEnSWDIkyI8va3njcLrVKDfc9&index=4 ...
-- https://www.youtube.com/watch?v=KnUXztKueMU&list=PLWAuYt0wgRcLCtWzUxNg4BjnYlCZNEVth
+- Afaque Ahmad: https://www.youtube.com/watch?v=KnUXztKueMU&list=PLWAuYt0wgRcLCtWzUxNg4BjnYlCZNEVth
 
 
 # LEARNING PATH
