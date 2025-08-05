@@ -23,9 +23,6 @@ To set up Spark's **environment** and **execution parameters** before a job runs
 
 
 
-
-
-
 ## ✅ 2. **What is Spark Tuning?**
 
 **Definition:**
