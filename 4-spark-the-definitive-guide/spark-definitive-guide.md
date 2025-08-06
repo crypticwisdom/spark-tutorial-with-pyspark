@@ -40,17 +40,21 @@
 - Structured Streaming:  High level API for stream processing. You can take the same operation that you performed in batch mode using Spark's structured APIs and run them in a streaming fashion. Streaming process reduces latency and allow for incremental processing.
 - Transformations on a streaming dataframe are also lazy and requires a streaming action to start the execution of this flow. 
   - Spark reshuffles the data, and the output of that shuffle will have N partitions, where: `N = spark.sql.shuffle.partitions (default = 200)`, If you set it to 5, the shuffled output will have 5 partitions, regardless of the default 200. Spark will create 5 tasks, 1 for each partition.
-  -  It's not a reduction of existing partitions — it's how Spark re-partitions the data during shuffling.
+  - It's not a reduction of existing partitions — it's how Spark re-partitions the data during shuffling.
   - `spark.sql.shuffle.partitions` Controls the number of partitions created by shuffle operations
-  - ""Practice: because there aren’t many executors on this machine, it’s worth reducing this to 5.""
+  - "Practice: because there aren’t many executors on this machine, it’s worth reducing this to 5."
 
 - Low-Level API (RDD): Virtually everything (even the Structured APIs) in Spark is built on top of RDDs. DF operations compiles down to this lower-low tool for convinient and extremely efficient distributed executions, but the RDD operations are not optimized by catalyst optimizer and doesn't have an entry point in the 'SQL and Dataframe' section in the UI. Most of the times developers will write applications with the Structured APIs.
- 
----
 
+`You may read the rest of the book any way that you prefer, we find that most people hop from area to area as they hear terminology or want to apply Spark to certain problems they’re facing.`
+---
 
 ## Part 2 -> Chapter 4:
 
+
+
+
+## Part 5 (Streaming) -> Chapter 20: Stream Processing Fundamental
 
 
 
@@ -84,7 +88,7 @@
 - If you call `.cache()` or `.persist()`, Spark stores intermediate results **in executor memory**.
 - Without `.cache()`, Spark will **recompute** the data each time it's needed.
 - You can **uncache** data using:
-    
+
     ```python
     df.unpersist()
     ```
