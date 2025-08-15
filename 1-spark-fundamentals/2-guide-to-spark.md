@@ -6,38 +6,39 @@
 
 Apache Spark is an open-source distributed data processing engine for large data analytics and machine learning tasks. It provides fast in-memory computation capabilities suitable for batch and streaming workloads.
 
-**Spark Core**: Spark Core is the foundational engine that handles task scheduling, memory management, fault recovery, and the RDD API. 
+**Spark Core**: Spark Core is the foundational engine that handles task scheduling, memory management, fault recovery, and the RDD API.
 **Apache Spark** refers to the entire ecosystem, including Spark Core plus higher-level modules (Spark SQL, MLlib, Streaming, GraphX).
-
 
 ### **Spark Modules**
 
-Think of Spark’s “modules” not as totally separate engines, but as **bundled libraries** or **components** that all run on top of the same core execution engine (Spark Core). 
+Think of Spark’s “modules” not as totally separate engines, but as **bundled libraries** or **components** that all run on top of the same core execution engine (Spark Core).
 
 - **Spark Core:**  is the **foundational engine** of Apache Spark. Foundation handling basic I/O, task scheduling, memory management, and recovery.
 - **Spark SQL:** DataFrame/Dataset abstraction, SQL semantics, schema support, and optimization via Catalyst.
-    - With Spark SQL, you can register any DataFrame as a table or view (a temporary table) and query it using pure SQL. There is no performance difference between writing SQL queries or writing DataFrame code, they both “compile” to the same underlying plan that we specify in DataFrame code.
+  - With Spark SQL, you can register any DataFrame as a table or view (a temporary table) and query it using pure SQL. There is no performance difference between writing SQL queries or writing DataFrame code, they both “compile” to the same underlying plan that we specify in DataFrame code.
     - 3 types of tables:.createOrReplaceTempView, .createOrReplaceGlobalTempView, df.write.saveAsTable("my_table"): Permernent table save on hive, if hive is enabled.
 - **Structured Streaming:** DataFrame-based streaming queries.
 - **MLlib:** ML algorithms and pipeline utilities.
 - **GraphX:** Graph computation engine using RDDs.
 - **SparkR & PySpark:** Language-specific wrappers allowing R and Python users to interact with Spark.
 
+### Batch vs Streaming
 
-### Batch vs Streaming:
-#### **What is Batch Processing?**:
+#### **What is Batch Processing?**
+
 Batch processing is when Spark reads a large, fixed dataset (bounded dataset), processes it all at once, and outputs results.
 Once the data is processed, the job ends. That's batch!
 
 **Example:**
+
 - Data Warehouse loading
 - Monthly Report Generation
 - Monthly billing
 
 > Spark Module Used: Spark Core/Spark SQL
 
-
 #### Streaming Processing?
+
 **Definition:**
 Streaming in Spark (Structured Streaming) is designed to handle continuous data (Unbounded records), e.g., from Kafka, socket, files, or IoT sensors.
 
@@ -53,9 +54,9 @@ Let’s say your app is receiving real-time transactions. You want to:
 > Spark Structured Streaming module lets you do this with the same DataFrame-style.
 
 ⚙️ **Spark's Unique Advantage**
+
 - Same API for Batch and Streaming.
 - Spark Structured Streaming lets you write almost the same code for both batch and streaming. That makes it easier to build once and scale as needed.
-
 
 ### 🌐 **Supported Language APIs**
 
@@ -68,10 +69,10 @@ Let’s say your app is receiving real-time transactions. You want to:
 - **In-Memory Processing:** Enables fast computations by reducing disk I/O.
 - **Distributed Computing:** Tasks are executed in parallel across multiple cluster nodes.
 - **Cluster Manager Support:**
-    - **Standalone:** Spark’s built-in.
-    - **YARN:** Widely used in Hadoop environments.
-    - **Kubernetes:** Modern container orchestration.
-    - **Mesos:** Legacy, less common today.
+  - **Standalone:** Spark’s built-in.
+  - **YARN:** Widely used in Hadoop environments.
+  - **Kubernetes:** Modern container orchestration.
+  - **Mesos:** Legacy, less common today.
 - **Fault Tolerance:** Achieved via lineage and DAG (Directed Acyclic Graph) recomputation.
 - **Lazy Evaluation:** Computations are executed only upon triggering an action.
 - **Catalyst Optimizer:** Optimizes SQL and DataFrame queries.
@@ -86,13 +87,10 @@ Let’s say your app is receiving real-time transactions. You want to:
 - **Development:** PySpark within Docker for local clusters.
 - **Production:** Kubernetes for scalable deployments.
 
-
-
 ---
 
-
-
 ## 📌 2. **Apache Spark Architecture Explained**
+>
 > Driver and Executors are processes that run on JVM.
 Apache Spark follows a **driver-executor** architecture managed by a **cluster manager** (like YARN or Kubernetes). The main components are:
 
@@ -110,6 +108,7 @@ The **Driver** is the **master coordinator** for a Spark application. It perform
 - Collecting **results**, maintaining **metrics**, and managing **lineage**.
 
 **Responsible for three things:**
+
 1. Maintaining information about the Spark Application
 2. Responding to a user’s program or input
 3. Analyzing, distributing, and scheduling work across the executors.
@@ -133,9 +132,8 @@ They are responsible for:
 - Caching intermediate results **in memory or disk**, if `.cache()` or `.persist()` is used.
 - Writing output to sinks or returning results to the driver.
 
-📌 Executors **do not share memory**. 
+📌 Executors **do not share memory**.
 Each executor is independent and operates on **its own task/data partition**.
-
 
 ### **3. Cluster Manager**
 
@@ -151,11 +149,12 @@ The **Cluster Manager** allocates resources and starts up executors (and sometim
 > **Execution Mode:** This decides where Spark runs and who manages the resources. Execution mode can be K8S, which means K8S is responsible for managing resources.
 
 The cluster manager:
+
 - **Allocates CPU and memory** for the Driver and Executors.
 - **Launches** them as needed.
 - **Manages** their lifecycle (restart, kill, stop, ).
 
-> **Note:** 
+> **Note:**
 
 #### 🧩 **Role of the Driver and Executors**
 
@@ -164,9 +163,7 @@ The cluster manager:
 | **Driver** | Client Node | Manages SparkContext, planning, scheduling, communication with cluster manager. |
 | **Executor** | Worker Node | Executes tasks, stores data partitions, communicates results back to the Driver. |
 
-
 ---
-
 
 ## 3 📂 **Core Spark Abstractions**
 
@@ -181,6 +178,7 @@ The cluster manager:
 ### **2. DataFrame**
 
 A Distributed collection of data structured into named columns (similar to SQL tables). (Conceptual definition).
+
 - Built on top of RDD; utilizes Spark SQL.
 - Created from `SparkSession`.
 - Optimized automatically by Catalyst Optimizer and Tungsten Engine.
@@ -203,8 +201,8 @@ A Distributed collection of data structured into named columns (similar to SQL t
 
 >❗The data is not in the DataFrame. The **plan** is in the DataFrame. The **data** comes only when **executors** pull it during **task** execution.
 
-
 ### **3. Dataset**
+
 Combines the benefits of RDD and Dataframe, offering a strongly-typed object oriented API with optimization capabilities of dataframes.  Created from SparkSession (Spark SQL Module)
 
 - Strongly-typed distributed collection.
@@ -224,31 +222,27 @@ Combines the benefits of RDD and Dataframe, offering a strongly-typed object ori
 ### What “Distributed” Means
 
 - **Partitioned Data**
-    - Both RDDs and DataFrames are split into **partitions**. A partition is simply a chunk of your dataset (e.g., a slice of an array or subset of rows).
-    - Partitions are distributed across multiple **Executor** processes running on different nodes (or containers).
+  - Both RDDs and DataFrames are split into **partitions**. A partition is simply a chunk of your dataset (e.g., a slice of an array or subset of rows).
+  - Partitions are distributed across multiple **Executor** processes running on different nodes (or containers).
 - **Parallel Execution**
-    - The **Driver** (your program’s entry point, `SparkSession`) constructs a logical plan (DAG) of transformations.
-    - That plan is divided into **tasks**, one task per partition (or per stage), and sent to Executors.
-    - Executors run tasks in parallel, so if you have 100 partitions and 4 executors each with 2 cores, up to 8 tasks execute simultaneously.
+  - The **Driver** (your program’s entry point, `SparkSession`) constructs a logical plan (DAG) of transformations.
+  - That plan is divided into **tasks**, one task per partition (or per stage), and sent to Executors.
+  - Executors run tasks in parallel, so if you have 100 partitions and 4 executors each with 2 cores, up to 8 tasks execute simultaneously.
 - **Fault Tolerance**
-    - If an Executor fails, the Driver reassigns its tasks on the remaining Executors using the lineage information (for RDDs) or query plan (for DataFrames).
-
-
+  - If an Executor fails, the Driver reassigns its tasks on the remaining Executors using the lineage information (for RDDs) or query plan (for DataFrames).
 
 ---
-
-
 
 ## 🧱 4. Spark Contexts (SparkSession, SparkContext, SQLContext, HiveContext)
 
 - `SparkSession` is the **new unified API entry point** from Spark 2.0 onward.
 - It wraps:
-    - **`SparkContext`** (for RDDs)
-    - **`SQLContext`** (for DataFrames and SQL)
-    - **`HiveContext`** (for Hive integration)
+  - **`SparkContext`** (for RDDs)
+  - **`SQLContext`** (for DataFrames and SQL)
+  - **`HiveContext`** (for Hive integration)
 
 > So while SparkSession gives direct access to DataFrames/Datasets, it also gives indirect access to RDDs through its internal SparkContext.
-> 
+>
 
 1. **Spark 2.0+ Unification**
     - Introduces **`SparkSession`** in the Spark SQL module
@@ -273,19 +267,17 @@ Approximately 90% of your work with Spark would be done using a SparkSession.
 - `SparkContext` = the old main entry point to Spark (for RDDs) defined by SparkCore
 - `SparkSession` = the new unified entry point (for DataFrame, SQL, etc.).
 
-### Data Loading diff. in SparkSession and SparkContext:
+### Data Loading diff. in SparkSession and SparkContext
 
 - `SparkContext.textFile(...)` creates **RDD**
 - `SparkSession.read.csv(...)` creates **DataFrame** (backed by RDD internally)
 
-
-
 ---
 
-
-
 ## 🚦5. **Deployment Modes**
+
 `Where the driver lives after submitting job`
+
 - **Local Mode:** The driver and executors both live on your machine (so technically, it's also deployed locally). When `local[...]` is used. No cluster manager needed.
 - **Client Mode:** Driver runs locally or on the machine which run thee submit command; executors run on the cluster. Ideal for testing/debugging.
 - **Cluster Mode:** Driver runs within the cluster together with the executors. Suitable for production.
@@ -300,9 +292,7 @@ Approximately 90% of your work with Spark would be done using a SparkSession.
 | **Kubernetes** | K8s API | Cloud-native | `--master k8s://...` |
 | **Mesos** | Mesos | Legacy | `--master mesos://...` |
 
-
 ---
-
 
 ## 📈 6. **Monitoring and Debugging**
 
@@ -312,9 +302,11 @@ Approximately 90% of your work with Spark would be done using a SparkSession.
 ---
 
 ## 🏠 7. Best Practices for PySpark in Production
+
 - Do **NOT** set `.master("local[*]")` in production code
 
 **Do the below at least For Production**
+
 ```python
 spark = SparkSession.builder.appName("MyApp").getOrCreate()
 
@@ -322,7 +314,8 @@ spark = SparkSession.builder.appName("MyApp").getOrCreate()
 ```
 
 **Use local[*] During testing or Development**: local[*], local[4]; where 4 is the Number of CPU core you want sprak to utilize.
-- Apply cluster configs via `spark-submit` if you want to override Default Spark Configuration. 
+
+- Apply cluster configs via `spark-submit` if you want to override Default Spark Configuration.
 **Example Spark-Submit for Kubernetes:**
 
 ```bash

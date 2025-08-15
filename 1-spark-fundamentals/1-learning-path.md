@@ -18,6 +18,7 @@
 ---
 
 ### Code with Examples in Jupyter**
+
 - [x]  **Starting a SparkSession**
 - [x]  **Creating DataFrames from Python objects, CSV, and Parquet**
 - [ ] **Basic DataFrame Operations:**
@@ -66,9 +67,7 @@
 - [ ] **Performance Tuning** → All of the above + UI analysis
 - [ ] **Best Practices for PySpark in Production**
   
-
 ---
-
 
 🔧 **Optimization Techniques:**
 
