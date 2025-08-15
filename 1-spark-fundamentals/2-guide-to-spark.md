@@ -6,7 +6,8 @@
 
 Apache Spark is an open-source distributed data processing engine for large data analytics and machine learning tasks. It provides fast in-memory computation capabilities suitable for batch and streaming workloads.
 
-**Spark Core vs. Apache Spark**: Spark Core is the foundational engine that handles task scheduling, memory management, fault recovery, and the RDD API. **Apache Spark** refers to the entire ecosystem, including Spark Core plus higher-level modules (Spark SQL, MLlib, Streaming, GraphX).
+**Spark Core**: Spark Core is the foundational engine that handles task scheduling, memory management, fault recovery, and the RDD API. 
+**Apache Spark** refers to the entire ecosystem, including Spark Core plus higher-level modules (Spark SQL, MLlib, Streaming, GraphX).
 
 
 ### **Spark Modules**
@@ -16,7 +17,7 @@ Think of Spark’s “modules” not as totally separate engines, but as **bundl
 - **Spark Core:**  is the **foundational engine** of Apache Spark. Foundation handling basic I/O, task scheduling, memory management, and recovery.
 - **Spark SQL:** DataFrame/Dataset abstraction, SQL semantics, schema support, and optimization via Catalyst.
     - With Spark SQL, you can register any DataFrame as a table or view (a temporary table) and query it using pure SQL. There is no performance difference between writing SQL queries or writing DataFrame code, they both “compile” to the same underlying plan that we specify in DataFrame code.
-    - 3 types of tables:.createOrReplaceTempView, .createOrReplaceGlobalTempView, df.write.saveAsTable("my_table"): Permernent table save on hive, it hive is enabled.
+    - 3 types of tables:.createOrReplaceTempView, .createOrReplaceGlobalTempView, df.write.saveAsTable("my_table"): Permernent table save on hive, if hive is enabled.
 - **Structured Streaming:** DataFrame-based streaming queries.
 - **MLlib:** ML algorithms and pipeline utilities.
 - **GraphX:** Graph computation engine using RDDs.
@@ -49,12 +50,11 @@ Let’s say your app is receiving real-time transactions. You want to:
 - Show live stats on a dashboard
 - Alert if abnormal spending occurs
 
-> Spark Structured Streaming lets you do this with the same DataFrame-style c
-> Spark Module: SPark Structured Streaming
+> Spark Structured Streaming module lets you do this with the same DataFrame-style.
 
 ⚙️ **Spark's Unique Advantage**
-Same API for Batch and Streaming
-Spark Structured Streaming lets you write almost the same code for both batch and streaming. That makes it easier to build once and scale as needed.
+- Same API for Batch and Streaming.
+- Spark Structured Streaming lets you write almost the same code for both batch and streaming. That makes it easier to build once and scale as needed.
 
 
 ### 🌐 **Supported Language APIs**
@@ -108,10 +108,11 @@ The **Driver** is the **master coordinator** for a Spark application. It perform
 - Scheduling and sending **tasks** to executors.
 - Tracking task execution and handling **failures**.
 - Collecting **results**, maintaining **metrics**, and managing **lineage**.
-- 
-`Responsible for three things:
-maintaining information about the Spark Application; responding to a user’s program or input;
-and analyzing, distributing, and scheduling work across the executors`
+
+**Responsible for three things:**
+1. Maintaining information about the Spark Application
+2. Responding to a user’s program or input
+3. Analyzing, distributing, and scheduling work across the executors.
 
 **🧠 Note:**
 
@@ -126,13 +127,14 @@ and analyzing, distributing, and scheduling work across the executors`
 
 They are responsible for:
 
-- Reading their **own partition** of the data **directly from the source and not from any in-memory datasets stored in driver -** The **DataFrame object** *does not* hold actual data, it holds only the **logical plan** (blueprint). (e.g., HDFS, S3, JDBC).
+- Reading their **own partition** of the data **directly from the source and not from any in-memory datasets stored in driver -** The **DataFrame object** *does not* hold actual data, it holds only the **logical plan** (blueprint).
 - Executing the **tasks** assigned by the Driver.
 - Performing **transformations** and **actions**.
 - Caching intermediate results **in memory or disk**, if `.cache()` or `.persist()` is used.
 - Writing output to sinks or returning results to the driver.
 
-📌 Executors **do not share memory**. Each executor is independent and operates on **its own task/data partition**.
+📌 Executors **do not share memory**. 
+Each executor is independent and operates on **its own task/data partition**.
 
 
 ### **3. Cluster Manager**
@@ -180,17 +182,25 @@ The cluster manager:
 
 A Distributed collection of data structured into named columns (similar to SQL tables). (Conceptual definition).
 - Built on top of RDD; utilizes Spark SQL.
-- Created from `SparkSession.read()`.
+- Created from `SparkSession`.
 - Optimized automatically by Catalyst Optimizer and Tungsten Engine.
 - You can find details of any application using DF/DS in Job, Stages, Spark SQL/Dataframe section in the UI.
 - a Spark **DataFrame** is not materialized when you define it. It's just a **logical plan** until you run an **action**.
+
 > The definition is **conceptually** describing what a DataFrame **represents**, not what it *holds right now* in memory (What it holds in memory is logical plan, until during execution it becomes materialized - read into a row-column structure).
+
 > DataFrame is generated by the driver after parsing the code. It is simply a logical plan that describes what data to read, how it is read and how data is presented.
+
 > Materialized = read from source into memory in **partitions** across **executors**.
+
 > **Partition** = a chunk of the data (a subset of rows). Spark tries to read these **in parallel**.
+
 > **Task** = a unit of work that **processes one partition**. For example, a task might say: "Read partition X, filter it, join it, write result Y."
-> 🔁 One **task per partition**.
->❗You **don’t send the partition** to the executor — the **task** tells the executor to go read its **own partition** from the **source** (HDFS, S3, DB, etc.)
+
+> 🔁 One **task per partition** in 1 CPU core.
+
+>❗You **don’t send the partition** to the executor (you send tasks) — the **task** tells the executor to go read its **own partition** from the **source** (HDFS, S3, DB, etc.)
+
 >❗The data is not in the DataFrame. The **plan** is in the DataFrame. The **data** comes only when **executors** pull it during **task** execution.
 
 
@@ -258,7 +268,7 @@ Approximately 90% of your work with Spark would be done using a SparkSession.
 
 #### **Relationship: Spark, Spark Core, Spark Context, RDD**
 
-- `Spark` = umbrella framework.
+- `Apache Spark` = umbrella framework.
 - `Spark Core` = engine with execution and RDD API.
 - `SparkContext` = the old main entry point to Spark (for RDDs) defined by SparkCore
 - `SparkSession` = the new unified entry point (for DataFrame, SQL, etc.).
@@ -278,7 +288,7 @@ Approximately 90% of your work with Spark would be done using a SparkSession.
 `Where the driver lives after submitting job`
 - **Local Mode:** The driver and executors both live on your machine (so technically, it's also deployed locally). When `local[...]` is used. No cluster manager needed.
 - **Client Mode:** Driver runs locally or on the machine which run thee submit command; executors run on the cluster. Ideal for testing/debugging.
-- **Cluster Mode:** Driver runs within the cluster. Suitable for production.
+- **Cluster Mode:** Driver runs within the cluster together with the executors. Suitable for production.
 
 ### 📅 Deployment Mode Table
 
@@ -302,14 +312,13 @@ Approximately 90% of your work with Spark would be done using a SparkSession.
 ---
 
 ## 🏠 7. Best Practices for PySpark in Production
-
 - Do **NOT** set `.master("local[*]")` in production code
-**Do this For Production**
 
+**Do the below at least For Production**
 ```python
 spark = SparkSession.builder.appName("MyApp").getOrCreate()
 
-# *When you write PySpark code using spark.read… or df.select… or spark.sql(…), you’re using that SQL layer—your code gets optimized, and you benefit from faster predicate pushdown, vectorized I/O, and Catalyst-driven planning, while still running on the same Core engine under the covers.*
+# *When you write PySpark code using spark.read… or df.select… or spark.sql(…), you’re using that SQL module your code will get optimized by Catalyst and Tung. Eng., and you benefit from faster predicate pushdown, vectorized I/O, and Catalyst-driven planning, while still running on the same Core engine under the covers.*
 ```
 
 **Use local[*] During testing or Development**: local[*], local[4]; where 4 is the Number of CPU core you want sprak to utilize.
