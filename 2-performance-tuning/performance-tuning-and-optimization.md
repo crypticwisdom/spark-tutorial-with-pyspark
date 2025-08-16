@@ -1,6 +1,7 @@
-### 🛠️ Optimization Techniques include:
+# 🛠️ Optimization Techniques include
 
 What user can do to Optimize Spark:
+
 - Use optimized format for storaging data, like parquet, delta, instead of CSV
 - Avoid expensize operations like sort
 - Minimize volume of data
@@ -13,19 +14,10 @@ What user can do to Optimize Spark:
 - Filtering early, selecting only needed columns
 - ...
 
-### 💡 Also includes:
+## 💡 Also includes
 
 * Understanding **Catalyst Optimizer** (Spark SQL's logical/physical plan optimizer)
 * Using **WholeStageCodegen**, **Tungsten**, and **Broadcast joins**
-
-
-
-
-
-
-
-
-
 
 ## 🧩 Other Related Areas You Might Have Missed
 
